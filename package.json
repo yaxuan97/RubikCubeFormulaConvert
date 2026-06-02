@@ -1,0 +1,10 @@
+{
+  "name": "magic-cube-method-convert",
+  "private": true,
+  "scripts": {
+    "test": "pnpm -r run test",
+    "build": "pnpm -r run build",
+    "dev:web": "pnpm --filter @cube/web dev",
+    "cli": "pnpm --filter @cube/cli exec tsx src/index.ts"
+  }
+}

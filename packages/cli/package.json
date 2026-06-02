@@ -1,0 +1,20 @@
+{
+  "name": "@cube/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "cube-convert": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cube/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "tsx": "^4.7.0"
+  }
+}
