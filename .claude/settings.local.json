@@ -10,7 +10,11 @@
       "Bash(pnpm --version)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(pnpm --filter @cube/core exec tsc --noEmit)",
+      "Bash(pnpm --filter @cube/core test -- parser.test.ts)",
+      "Bash(pnpm --filter @cube/core test -- serializer.test.ts)",
+      "Bash(pnpm --filter @cube/core test -- transform.test.ts)"
     ]
   }
 }
