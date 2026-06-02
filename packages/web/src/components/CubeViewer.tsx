@@ -26,6 +26,8 @@ const FACE_DIRECTION: Record<string, [number, number, number]> = {
 
 export default function CubeViewer({ onFaceClick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const onFaceClickRef = useRef(onFaceClick);
+  onFaceClickRef.current = onFaceClick;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -121,7 +123,7 @@ export default function CubeViewer({ onFaceClick }: Props) {
             bestFace = face as BaseFace;
           }
         }
-        onFaceClick(bestFace);
+        onFaceClickRef.current(bestFace);
       }
     }
 
