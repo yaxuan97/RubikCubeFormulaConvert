@@ -21,13 +21,12 @@ export { transform, flattenAst } from './transform.js';
 // High-level convenience
 import { parse } from './parser.js';
 import { serialize } from './serializer.js';
-import { transform, flattenAst } from './transform.js';
+import { transform } from './transform.js';
 import { PoseSpec, RotationSpec, TransformResult } from './types.js';
 
 export function convert(formula: string, spec: PoseSpec | RotationSpec): TransformResult {
   const ast = parse(formula);
   const transformed = transform(ast, spec);
-  const flat = flattenAst(transformed);
-  const output = serialize(flat);
+  const output = serialize(transformed);
   return { input: formula, output, spec };
 }
