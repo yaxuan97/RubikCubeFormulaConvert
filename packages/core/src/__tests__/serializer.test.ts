@@ -14,10 +14,10 @@ describe('serialize', () => {
 
   it('serializes a sequence with spaces', () => {
     const seq = [
-      { type: 'move', face: 'R', modifier: '' as const },
-      { type: 'move', face: 'U', modifier: '' as const },
-      { type: 'move', face: 'R', modifier: "'" as const },
-      { type: 'move', face: 'U', modifier: "'" as const },
+      { type: 'move' as const, face: 'R' as const, modifier: '' as const },
+      { type: 'move' as const, face: 'U' as const, modifier: '' as const },
+      { type: 'move' as const, face: 'R' as const, modifier: "'" as const },
+      { type: 'move' as const, face: 'U' as const, modifier: "'" as const },
     ];
     expect(serialize(seq)).toBe("R U R' U'");
   });
