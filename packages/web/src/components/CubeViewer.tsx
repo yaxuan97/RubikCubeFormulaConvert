@@ -7,15 +7,23 @@ interface Props {
   facing: BaseFace;
   headUp: BaseFace;
   onFaceClick: (face: BaseFace) => void;
+  colors?: CubeColors;
 }
 
-const FACE_COLORS: Record<string, number> = {
-  R: 0xff3333,
-  L: 0xff8800,
-  U: 0xffffff,
-  D: 0xffdd00,
-  F: 0x00aa00,
-  B: 0x0066ff,
+export interface CubeColors {
+  R: number; L: number; U: number; D: number; F: number; B: number;
+}
+
+export const COLOR_SCHEMES: Record<string, CubeColors> = {
+  'WCA': {
+    R: 0xff3333, L: 0xff8800, U: 0xffffff, D: 0xffdd00, F: 0x00aa00, B: 0x0066ff,
+  },
+  'Japanese': {
+    R: 0xff3333, L: 0xff8800, U: 0xffffff, D: 0x0066ff, F: 0x00aa00, B: 0xffdd00,
+  },
+  'White Bottom': {
+    R: 0xff3333, L: 0xff8800, U: 0xffdd00, D: 0xffffff, F: 0x00aa00, B: 0x0066ff,
+  },
 };
 
 const FACE_DIRECTION: Record<string, [number, number, number]> = {
@@ -24,7 +32,7 @@ const FACE_DIRECTION: Record<string, [number, number, number]> = {
   F: [ 0, 0, 1], B: [ 0, 0,-1],
 };
 
-export default function CubeViewer({ onFaceClick }: Props) {
+export default function CubeViewer({ onFaceClick, colors = COLOR_SCHEMES['WCA'] }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const onFaceClickRef = useRef(onFaceClick);
   onFaceClickRef.current = onFaceClick;
@@ -75,12 +83,12 @@ export default function CubeViewer({ onFaceClick }: Props) {
         for (let z = -1; z <= 1; z++) {
           const geo = new THREE.BoxGeometry(0.9, 0.9, 0.9);
           const mats = [
-            new THREE.MeshStandardMaterial({ color: x > 0 ? FACE_COLORS.R : 0x111111, roughness: 0.4 }),
-            new THREE.MeshStandardMaterial({ color: x < 0 ? FACE_COLORS.L : 0x111111, roughness: 0.4 }),
-            new THREE.MeshStandardMaterial({ color: y > 0 ? FACE_COLORS.U : 0x111111, roughness: 0.4 }),
-            new THREE.MeshStandardMaterial({ color: y < 0 ? FACE_COLORS.D : 0x111111, roughness: 0.4 }),
-            new THREE.MeshStandardMaterial({ color: z > 0 ? FACE_COLORS.F : 0x111111, roughness: 0.4 }),
-            new THREE.MeshStandardMaterial({ color: z < 0 ? FACE_COLORS.B : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: x > 0 ? colors.R : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: x < 0 ? colors.L : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: y > 0 ? colors.U : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: y < 0 ? colors.D : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: z > 0 ? colors.F : 0x111111, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ color: z < 0 ? colors.B : 0x111111, roughness: 0.4 }),
           ];
           const mesh = new THREE.Mesh(geo, mats);
           mesh.position.set(x, y, z);
@@ -91,7 +99,7 @@ export default function CubeViewer({ onFaceClick }: Props) {
 
     // Face labels (sprites)
     Object.entries(FACE_DIRECTION).forEach(([face, dir]) => {
-      const sprite = makeTextSprite(face, FACE_COLORS[face]);
+      const sprite = makeTextSprite(face, colors[face as keyof CubeColors]);
       sprite.position.set(dir[0] * 2.2, dir[1] * 2.2, dir[2] * 2.2);
       scene.add(sprite);
     });
@@ -173,7 +181,7 @@ export default function CubeViewer({ onFaceClick }: Props) {
       }
       renderer.dispose();
     };
-  }, []);
+  }, [colors]);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 }
