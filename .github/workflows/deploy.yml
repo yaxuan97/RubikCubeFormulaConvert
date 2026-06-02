@@ -28,9 +28,7 @@ jobs:
 
       - run: pnpm --filter @cube/core build
 
-      - run: pnpm --filter @cube/web build
-        env:
-          VITE_BASE: /MagicCubeMethodConvert/
+      - run: pnpm --filter @cube/web exec vite build --base /MagicCubeMethodConvert/
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
