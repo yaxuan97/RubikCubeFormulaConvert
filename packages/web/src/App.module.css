@@ -1,0 +1,45 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a2e;
+  color: #eee;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.header {
+  padding: 16px 24px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+
+.viewer {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.controls {
+  width: 360px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: #16213e;
+  border-left: 1px solid #0f3460;
+  overflow-y: auto;
+}
