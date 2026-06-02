@@ -96,11 +96,24 @@ export default function CubeViewer({ onFaceClick }: Props) {
       scene.add(sprite);
     });
 
-    // Raycaster for face click
+    // Raycaster for face click — only trigger on stationary click (not drag)
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
+    let mouseDownPos: { x: number; y: number } | null = null;
 
-    function onMouseClick(event: MouseEvent) {
+    function onMouseDown(event: MouseEvent) {
+      mouseDownPos = { x: event.clientX, y: event.clientY };
+    }
+
+    function onMouseUp(event: MouseEvent) {
+      if (!mouseDownPos) return;
+      const dx = event.clientX - mouseDownPos.x;
+      const dy = event.clientY - mouseDownPos.y;
+      mouseDownPos = null;
+
+      // Ignore if mouse moved more than 3px (it's a drag, not a click)
+      if (dx * dx + dy * dy > 9) return;
+
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -110,10 +123,8 @@ export default function CubeViewer({ onFaceClick }: Props) {
 
       if (intersects.length > 0) {
         const normal = intersects[0].face!.normal.clone();
-        // Transform normal by cubie's world matrix
         normal.transformDirection(intersects[0].object.matrixWorld);
 
-        // Find closest face direction
         let bestFace: BaseFace = 'F';
         let bestDot = -Infinity;
         for (const [face, dir] of Object.entries(FACE_DIRECTION)) {
@@ -127,7 +138,8 @@ export default function CubeViewer({ onFaceClick }: Props) {
       }
     }
 
-    renderer.domElement.addEventListener('click', onMouseClick);
+    renderer.domElement.addEventListener('mousedown', onMouseDown);
+    renderer.domElement.addEventListener('mouseup', onMouseUp);
 
     // Resize
     function onResize() {
@@ -152,7 +164,8 @@ export default function CubeViewer({ onFaceClick }: Props) {
 
     return () => {
       cancelAnimationFrame(animId);
-      renderer.domElement.removeEventListener('click', onMouseClick);
+      renderer.domElement.removeEventListener('mousedown', onMouseDown);
+      renderer.domElement.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('resize', onResize);
       controls.dispose();
       if (container.contains(renderer.domElement)) {
