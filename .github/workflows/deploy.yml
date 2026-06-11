@@ -28,7 +28,7 @@ jobs:
 
       - run: pnpm --filter @cube/core build
 
-      - run: pnpm --filter @cube/web exec vite build --base /MagicCubeFormulaConvert/
+      - run: pnpm --filter @cube/web exec vite build --base /RubikCubeFormulaConvert/
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
